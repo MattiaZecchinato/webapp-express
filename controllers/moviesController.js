@@ -1,7 +1,25 @@
+// movies db
+const connection = require('../data/db')
+
 //index
 function index(req, res) {
 
-    res.send('index path');
+    const sql = 'SELECT * FROM movies';
+
+    connection.query(sql, (err, result) => {
+
+        if(err) {
+
+            return res.status(500).json({
+                status: '500',
+                error: 'Query error'
+            });
+        }
+
+        res.json(result);
+    });
+
+    console.log('index path');
 }
 
 //show
