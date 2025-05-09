@@ -2,7 +2,12 @@ const express = require('express');
 
 const app = express();
 
-const port = 3000;
+const { PORT } = process.env;
+const port = PORT;
+
+// connection db
+const connection = require('./data/db');
+
 
 app.use('/', (req, res) => {
 
