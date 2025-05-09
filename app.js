@@ -5,14 +5,15 @@ const app = express();
 const { PORT } = process.env;
 const port = PORT;
 
-// connection db
-const connection = require('./data/db');
+//movies router
+const router = require('./routers/moviesRouter');
 
-
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
 
     res.send('Base test');
 });
+
+app.use('/movies', router);
 
 app.listen(port, () => {
 
