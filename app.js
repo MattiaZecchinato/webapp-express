@@ -10,6 +10,7 @@ const router = require('./routers/moviesRouter');
 
 //middlewares
 const notFound = require('./middlewares/notFound');
+const errorsHandler = require('./middlewares/errorsHandler');
 
 app.get('/', (req, res) => {
 
@@ -17,6 +18,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/movies', router);
+
+app.use(errorsHandler);
 
 app.use(notFound);
 
