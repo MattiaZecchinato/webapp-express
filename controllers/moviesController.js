@@ -23,7 +23,7 @@ function index(req, res) {
         res.json(result.map(currentMovie => (
             {
                 ...currentMovie,
-                imagePath: `${PUBLIC_PATH}public/imgs/movies-cover/${currentMovie.image}`
+                imagePath: `${PUBLIC_PATH}imgs/movies-cover/${currentMovie.image}`
             }
         )));
     });
@@ -65,7 +65,7 @@ function show(req, res) {
         const movie = {
 
             ...currentResult,
-            imagePath: `${PUBLIC_PATH}public/imgs/movies-cover/${currentResult.image}`
+            imagePath: `${PUBLIC_PATH}imgs/movies-cover/${currentResult.image}`
         }
 
 
