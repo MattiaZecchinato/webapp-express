@@ -1,5 +1,7 @@
 // movies db
-const connection = require('../data/db')
+const connection = require('../data/db');
+
+const { PUBLIC_PATH } = process.env;
 
 //index
 function index(req, res) {
@@ -18,7 +20,12 @@ function index(req, res) {
             });
         }
 
-        res.json(result);
+        res.json(result.map(currentMovie => (
+            {
+                ...currentMovie,
+                imagePath: `${PUBLIC_PATH}public/imgs/movies-cover/${currentMovie.image}`
+            }
+        )));
     });
 
     console.log('index path');
@@ -33,7 +40,7 @@ function show(req, res) {
 
     const reviewsSql = `SELECT reviews.* FROM reviews 
                             JOIN movies ON movies.id = reviews.movie_id 
-                            WHERE movies.id = ?`
+                            WHERE movies.id = ?`;
 
     connection.query(moviesSql, [id], (err, moviesResult) => {
 
@@ -53,7 +60,14 @@ function show(req, res) {
             });
         }
 
-        let currentMovie = moviesResult[0];
+        const currentResult = moviesResult[0];
+
+        const movie = {
+
+            ...currentResult,
+            imagePath: `${PUBLIC_PATH}public/imgs/movies-cover/${currentResult.image}`
+        }
+
 
         connection.query(reviewsSql, [id], (err, reviewsResult) => {
 
@@ -65,9 +79,9 @@ function show(req, res) {
                 });
             }
 
-            currentMovie.reviews = reviewsResult;
+            movie.reviews = reviewsResult;
 
-            res.json(currentMovie);
+            res.json(movie);
         });
     });
 
