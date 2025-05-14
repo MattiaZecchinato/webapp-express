@@ -6,8 +6,8 @@ const { PUBLIC_PATH } = process.env;
 //index
 function index(req, res) {
 
-    const sql = `SELECT movies.*, AVG(reviews.vote) AS avg_vote FROM movies 
-                    JOIN reviews ON movies.id = reviews.movie_id 
+    const sql = `SELECT movies.*, ROUND(AVG(reviews.vote), 1) AS avg_vote FROM movies 
+                    LEFT JOIN reviews ON movies.id = reviews.movie_id 
                     GROUP BY movies.id`;
 
     connection.query(sql, (err, result) => {
@@ -36,13 +36,16 @@ function show(req, res) {
 
     const id = parseInt(req.params.id);
 
-    const moviesSql = 'SELECT * FROM movies WHERE id = ?';
+    const movieSql = `SELECT movies.*, ROUND(AVG(reviews.vote), 1) AS avg_vote FROM movies 
+                    LEFT JOIN reviews ON movies.id = reviews.movie_id 
+                    WHERE movies.id = ?
+                    GROUP BY movies.id`;
 
     const reviewsSql = `SELECT reviews.* FROM reviews 
-                            JOIN movies ON movies.id = reviews.movie_id 
+                            JOIN movies ON movies.id = reviews.movie_id
                             WHERE movies.id = ?`;
 
-    connection.query(moviesSql, [id], (err, moviesResult) => {
+    connection.query(movieSql, [id], (err, moviesResult) => {
 
         if(err) {
 
