@@ -91,4 +91,26 @@ function show(req, res) {
     console.log(`show path with id: ${id}`);
 }
 
-module.exports = { index, show };
+function addReview(req, res) {
+
+    const id = parseInt(req.params.id);
+
+    const { name, vote, text } = req.body;
+
+    const sql = `INSERT INTO db_movies.reviews (movie_id, name, vote, text) VALUES (?, ?, ?, ?);`
+
+    connection.query(sql, [id, name, parseInt(vote), text], (err) => {
+
+        if(err) {
+
+            return res.status(500).json({
+                status: '500',
+                error: 'Query error'
+            });
+        }
+
+        res.status(201).json({id_movie: id, name, vote, text});
+    })
+}
+
+module.exports = { index, show, addReview };
