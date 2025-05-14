@@ -11,4 +11,7 @@ router.get('/', controller.index);
 //show
 router.get('/:id', controller.show);
 
+//add review
+router.post('/:id/review', controller.addReview);
+
 module.exports = router;
